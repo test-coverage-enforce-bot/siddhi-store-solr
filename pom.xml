@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<?xml version="1.0" encoding="UTF-8"?><!--
   ~ Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
   ~ WSO2 Inc. licenses this file to you under the Apache License,
@@ -15,22 +14,19 @@
   ~ KIND, either express or implied. See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.wso2</groupId>
         <artifactId>wso2</artifactId>
         <version>5</version>
     </parent>
-
     <groupId>org.wso2.extension.siddhi.store.solr</groupId>
     <artifactId>siddhi-store-solr-parent</artifactId>
     <version>1.0.16-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>WSO2 Siddhi Store Extension - Solr Aggregator Pom</name>
     <url>http://wso2.org</url>
-
     <profiles>
         <profile>
             <id>default</id>
@@ -43,7 +39,6 @@
             </modules>
         </profile>
     </profiles>
-
     <properties>
         <siddhi.version>4.0.4</siddhi.version>
         <log4j.version>1.2.17.wso2v1</log4j.version>
@@ -54,7 +49,6 @@
         <jacoco.ant.version>0.7.9</jacoco.ant.version>
         <awaitility.version>3.0.0</awaitility.version>
     </properties>
-
     <scm>
         <connection>scm:git:https://github.com/wso2-extensions/siddhi-store-solr.git</connection>
         <url>https://github.com/wso2-extensions/siddhi-store-solr.git</url>
@@ -62,7 +56,6 @@
         </developerConnection>
         <tag>HEAD</tag>
     </scm>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -144,7 +137,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <build>
         <plugins>
             <plugin>
@@ -159,6 +151,50 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent-by-coverage-enforcer</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <propertyName>argLine</propertyName>
+                            <destFile>${project.build.directory}/jacoco.exec</destFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-report-by-coverage-enforcer</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-check-by-coverage-enforcer</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+                            <rules>
+                                <!-- implementation is needed only for Maven 2 -->
+                                <rule implementation="org.jacoco.maven.RuleConfiguration">
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <!-- implementation is needed only for Maven 2 -->
+                                        <limit implementation="org.jacoco.report.check.Limit">
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.00</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.wso2.siddhi</groupId>
@@ -172,9 +208,16 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.21.0</version>
+                <configuration>
+                    <argLine>${argLine}</argLine>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
     <pluginRepositories>
         <pluginRepository>
             <id>wso2.releases</id>
@@ -209,7 +252,6 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
-
     <repositories>
         <repository>
             <id>wso2-nexus</id>
@@ -244,7 +286,6 @@
             </releases>
         </repository>
     </repositories>
-
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
